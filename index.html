@@ -1,0 +1,959 @@
+<html lang="en">
+<head>
+<base href="https://theliminaltimes/issue3">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Liminal Times - Issue #3 - Digital Liminal Spaces Edition</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Playfair+Display:wght@700&display=swap');
+
+body {
+  font-family: "EB Garamond", serif;
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/paper_fibers.png) repeat;
+  color: #1c1f33;
+  line-height: 1.3;
+  cursor: default;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for dark mode */
+}
+
+.container-fluid {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px 60px;
+  width: 100%;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.articles {
+  flex: 3;
+  column-count: 2;
+  column-gap: 2rem;
+  column-fill: balance;
+}
+
+.sidebar {
+  flex: 1;
+  margin-left: 0; /* Changed from 10px */
+  margin-right: 0; /* Changed from 40px */
+  border-left: 1px solid #1c1f33;
+  padding-left: 2rem;
+  transition: border-color 0.3s;
+}
+
+h1 {
+  font-family: "Playfair Display", serif;
+  font-size: calc(2rem + 2vw);
+  margin-bottom: 0.25rem;
+  transition: color 0.3s;
+}
+
+.issue-info {
+  font-size: 1rem;
+  color: #1c1f33;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.breaking-news {
+  padding: 0.5rem;
+  margin: 0.5rem 10px;
+  border: 1px solid #1c1f33;
+  font-family: "Playfair Display", serif;
+  border-left: none;
+  border-right: none;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.news-item {
+  /* margin-left: 30px; Removed this line */
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s;
+}
+
+.news-image {
+  float: none;
+  max-width: 80%;
+  margin: 0 auto 0.5rem auto;
+}
+
+.news-image img,
+.news-image svg {
+  max-width: 100%;
+  height: auto;
+}
+
+p {
+  text-align: justify;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s;
+}
+figcaption {
+  font-style: italic;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 0.25rem;
+  color: #555;
+  transition: color 0.3s;
+}
+
+.sidebar-item {
+  margin-bottom: 1rem;
+}
+
+.sidebar-item h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s;
+}
+
+.joke-container {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.reveal-punchline {
+  background-color: #1c1f33;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin: 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.reveal-punchline:hover {
+  background-color: #3a3f66;
+}
+
+#liminal-quiz {
+  max-width: 100%;
+}
+#liminal-quiz button[type="submit"] {
+  background-color: #1c1f33;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
+@media (max-width: 992px) {
+  .articles {
+    column-count: 1;
+  }
+  .main-content {
+    flex-direction: column;
+  }
+  .sidebar {
+    margin-left: 0; /* This was already 0, consistent with base change */
+    /* margin-right will inherit 0 from base rule, which is fine */
+    border-left: none;
+    border-top: 1px solid #1c1f33;
+    padding-left: 0;
+    padding-top: 1rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 15px 35px;
+  }
+  .issue-info {
+    font-size: 0.9rem;
+  }
+  #darkModeToggle { /* Adjust button position for smaller screens */
+    top: 15px;
+    right: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-fluid {
+    padding: 10px 30px;
+  }
+  h2 {
+    font-size: 1.3rem;
+  }
+  .news-item {
+    margin-bottom: 2rem; /* This remains, seems fine */
+  }
+  .sidebar-item {
+    padding: 0.5rem 0;
+  }
+  .joke-container,
+  .quiz-container {
+    padding: 15px;
+  }
+  #darkModeToggle { /* Adjust button position for smallest screens */
+    top: 10px;
+    right: 10px; /* Closer to edge due to less padding */
+    font-size: 1.3rem;
+  }
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+input[type="radio"] {
+  margin: 8px;
+}
+
+button {
+  max-width: 100%;
+  white-space: normal;
+}
+
+.sidebar-item figure img {
+  max-width: 100%;
+  height: auto;
+}
+
+#matrix-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: none;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+@keyframes neonShimmer {
+  0%,100% {
+    text-shadow: 0 0 5px #0f0, 0 0 10px #0f0, 0 0 20px #0f0;
+  }
+  50% {
+    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0;
+  }
+}
+  .spinner-container {
+    width: 400px;
+    height: 300px;
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+  }
+  .spinner-container p {
+    transition: color 0.3s;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #333;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background-image: none;
+  background-color: #0D0D0D;
+  color: #CCCCCC;
+}
+
+.dark-mode h1, 
+.dark-mode h2, 
+.dark-mode h3,
+.dark-mode .sidebar-item h3 { /* Ensure sidebar h3 is also white */
+  color: #FFFFFF;
+}
+
+.dark-mode .issue-info {
+  color: #AAAAAA;
+}
+
+.dark-mode .breaking-news {
+  background-color: #1A1A1A;
+  border-color: #333333;
+}
+
+.dark-mode .sidebar {
+  border-left-color: #333333;
+}
+
+.dark-mode footer {
+  border-top-color: #333333;
+}
+
+.dark-mode a {
+  color: #00E5E5;
+}
+.dark-mode a:hover {
+  color: #33FFFF;
+}
+
+.dark-mode .joke-container {
+  background-color: #1A1A1A;
+}
+.dark-mode .joke-container p { /* Ensure text inside joke container is light */
+    color: #CCCCCC;
+}
+
+.dark-mode .reveal-punchline {
+  background-color: #00AACC;
+  color: #0D0D0D;
+}
+.dark-mode .reveal-punchline:hover {
+  background-color: #00BBDD;
+}
+
+.dark-mode #liminal-quiz button[type="submit"] {
+  background-color: #00AACC;
+  color: #0D0D0D;
+  border: none; /* Ensure no dark border appears */
+}
+
+.dark-mode input[type="radio"] {
+  accent-color: #00AACC; /* Modern way to style radio checked state */
+  /* Fallback for older browsers - might need more specific styling if this isn't enough */
+  filter: invert(0.9) hue-rotate(180deg) contrast(0.8); /* A bit of a general filter */
+}
+.dark-mode label { /* Ensure label text is light */
+    color: #CCCCCC;
+}
+
+
+.dark-mode .spinner-container {
+  background: #1A1A1A;
+}
+.dark-mode .spinner-container p {
+  color: #CCCCCC;
+}
+.dark-mode .spinner {
+  border-color: #555555;
+  border-top-color: transparent; /* Keep top transparent */
+}
+.dark-mode figcaption {
+  color: #AAAAAA;
+}
+
+/* SVG Dark Mode Specifics */
+.dark-mode svg rect[fill="#f8f8f8"] { fill: #1A1A1A; }
+.dark-mode svg rect[fill="#2c2c2c"] { fill: #0D0D0D; }
+
+.dark-mode svg rect[fill="#c0c0c0"] { fill: #0D0D0D; }
+.dark-mode svg rect[fill="#fff"], 
+.dark-mode svg rect[fill="#ffffff"] { fill: #1A1A1A; }
+
+.dark-mode svg text[fill="#000080"] { fill: #8080FF; }
+.dark-mode svg text[fill="#0000ff"] { fill: #00E5E5; }
+.dark-mode svg rect[fill="#ff0000"] { fill: #B30000; } /* Darker red */
+
+/* Ensure SVG text elements not specifically targeted also get light color if they were dark */
+.dark-mode svg text[fill="#1c1f33"], 
+.dark-mode svg text[fill="#333"],
+.dark-mode svg text[fill="black"] {
+    fill: #CCCCCC;
+}
+/* Exception for matrix ad, it should remain as is */
+.dark-mode #matrix-ad svg text { /* Reset for matrix ad if general rule above affects it */
+    fill: #0f0; /* Original green color */
+}
+.dark-mode #matrix-ad svg rect[fill="#0f0"] + text { /* Text on green button in matrix ad */
+    fill: black; /* Original black color */
+}
+
+
+@media (max-width: 992px) {
+  .dark-mode .sidebar {
+    border-top-color: #333333;
+  }
+}
+
+#darkModeToggle {
+  background: transparent;
+  border: 1px solid #1c1f33;
+  color: #1c1f33;
+  padding: 5px 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%; /* circular button */
+  position: absolute;
+  top: 20px; 
+  right: 60px; 
+  line-height: 1; 
+  width: 40px; /* ensure circle shape */
+  height: 40px; /* ensure circle shape */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other elements */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.3s;
+}
+
+#darkModeToggle:hover {
+  background-color: #1c1f33;
+  color: white;
+  transform: scale(1.1);
+}
+
+.dark-mode #darkModeToggle {
+  border-color: #AAAAAA;
+  color: #AAAAAA;
+}
+
+.dark-mode #darkModeToggle:hover {
+  background-color: #AAAAAA;
+  color: #0D0D0D;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <header style="position: relative;">
+    <button id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+    <center><h1>The Liminal Times</h1>
+    <div class="issue-info">
+      Issue #3 | Monday, December 21, 2024 | Digital Liminal Spaces Edition</center>
+    </div>
+  </header>
+
+  <div class="breaking-news">
+    <h3>Breaking News</h3>
+    <p>Digital archaeologists discover ancient internet chatroom frozen in time since 1998.</p>
+  </div>
+
+  <div class="main-content">
+    <div class="articles">
+      <section class="news-item clearfix">
+        <h2>Digital Liminality: The New Frontier of In-Between Spaces</h2>
+        <figure class="news-image">
+          <img src="https://replicate.delivery/xezq/G0euwQSmRtzaJSzwpnjgCB2qfNIDqeRUPiS965MqWiPrBxynA/out-0.webp?auto=format&amp;fit=crop&amp;w=600&amp;h=400&amp;q=80" alt="A glowing computer screen in darkness showing distorted digital artifacts" width="600" height="400">
+          <figcaption>The ethereal glow of digital liminal spaces</figcaption>
+        </figure>
+        <p>In our increasingly digital world, a new form of liminal space has emerged. From abandoned websites to defunct social media platforms, these digital territories represent a unique type of in-between space that exists neither in the physical world nor fully in the virtual realm.</p>
+        <p>These spaces evoke nostalgia and curiosity, inviting exploration of the remnants of past digital interactions. They serve as reminders of our online evolution and the transient nature of digital existence.</p>
+        <p>Dr. Olivia Grey, a digital anthropologist, notes: "Digital liminal spaces are fascinating because they blend the past and present, creating a unique experience that challenges our understanding of permanence in the digital age."</p>
+        <p>As we navigate these forgotten corners of the internet, we are faced with questions about identity, memory, and the impact of technology on our lives.</p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>The Enigma of Cicada 3301: The Internet's Most Mysterious Puzzle</h2>
+        <figure class="news-image">
+          <img src="https://replicate.delivery/xezq/7P3lIonjQezvDCBSXdiVMsfb785jTXkmIPOazHMnfdMYHxynA/out-0.webp?auto=format&amp;fit=crop&amp;w=600&amp;h=400&amp;q=80" alt="An abstract representation of a cicada overlaying cryptic codes" width="600" height="400">
+          <figcaption>The elusive symbols associated with Cicada 3301</figcaption>
+        </figure>
+        <p>In 2012, a cryptic message appeared on internet forums claiming to seek "highly intelligent individuals." What followed was an elaborate series of puzzles spanning cryptography, steganography, and internet lore that captivated thousands worldwide.</p>
+        <p>The organization behind the puzzles, dubbed Cicada 3301, remains anonymous, fueling speculations ranging from secret societies to government recruitment programs.</p>
+        <p>Despite multiple puzzles over several years, the true purpose and members of Cicada 3301 remain shrouded in mystery, making it one of the internet's most enduring enigmas.</p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>Unveiling the Cult of Saturn: Ancient Symbolism in Modern Times</h2>
+        <figure class="news-image">
+          <img src="https://replicate.delivery/xezq/kPOnZ7EB5XoROZHdfofgXiqnPDprrb4VRGtVvxc3tXLRkY5TA/out-0.webp?auto=format&amp;fit=crop&amp;w=600&amp;h=400&amp;q=80" alt="A mysterious symbol representing Cult of Saturn" width="600" height="400">
+          <figcaption>Symbolic representations of Saturn have permeated various cultures</figcaption>
+        </figure>
+        <p>The Cult of Saturn emerged online between 2009 and 2013, spreading through niche forums and obscure boards. It wove together occult symbolism, cryptic puzzles, and cosmic conspiracies into a narrative that defied easy explanation. Some claim it offered access to hidden websites, secret “libraries,” and eerie fragments of multimedia. Yet, no central doctrine or verified leader ever surfaced, and attempts to chronicle its history often end with contradictory rumors and half-remembered posts lost to digital decay.</p> 
+        <p>To some, it was a hoax—an elaborate lure for conspiracy hunters; to others, it represented a genuine, if secretive, esoteric network. Hard evidence remains scarce: ephemeral links, whispered references in comment sections, and erratic archives. Today, the Cult of Saturn lingers as a digital phantom—an unsettling curiosity that eludes definitive understanding and leaves investigators grasping at fragments of speculation.</p>
+        <p>Learn more from Eudoxia Mysteries on Youtube: <a href="https://www.youtube.com/watch?v=wrccPmFMXY8" target="_blank">https://www.youtube.com/watch?v=wrccPmFMXY8</a></p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>The Lost Internet: Exploring Digital Ruins</h2>
+        <figure class="news-image">
+          <img src="https://replicate.delivery/xezq/2ZHMdYck6exIRiJFA4a5QBML20WoCbkMXhFQMANoll0wSs8JA/out-0.webp?auto=format&amp;fit=crop&amp;w=600&amp;h=400&amp;q=80" alt="An old computer terminal displaying vintage web design" width="600" height="400">
+          <figcaption>Remnants of the early internet era</figcaption>
+        </figure>
+        <p>From GeoCities neighborhoods to abandoned MySpace profiles, the internet is filled with digital ghost towns. These virtual spaces, frozen in time, represent a unique form of digital archaeology that tells the story of our online evolution.</p>
+        <p>Many of these spaces hold memories of early internet culture, showcasing the creativity and experimentation of users during the dawn of the digital age. Exploring these ruins invites nostalgia and reflection on how far we have come.</p>
+        <p>Archivists and digital historians are now working to preserve these lost corners of the internet, ensuring that future generations can learn from and appreciate the digital heritage left behind.</p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>Virtual Waiting Rooms: The Modern Liminal Experience</h2>
+        <figure class="news-image">
+  <div class="spinner-container">
+    <div class="spinner"></div>
+    <p>Please wait...</p>
+  </div>
+  <figcaption>The endless digital queue</figcaption>
+</figure>
+        <p>In an era of digital queues and virtual waiting rooms, we find ourselves increasingly suspended in digital limbo. From concert ticket purchases to vaccine appointments, these transitional spaces have become a defining feature of modern life.</p>
+        <p>Research indicates that the average person spends approximately 47 hours per year in various forms of digital waiting rooms, making them one of the most common liminal experiences in contemporary society.</p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>The Phenomenon of Dead Discord Servers</h2>
+        <figure class="news-image">
+          <svg width="600" height="400" viewBox="0 0 600 400">
+            <rect width="600" height="400" fill="#36393f"></rect>
+            <rect x="50" y="50" width="500" height="60" fill="#2f3136" rx="5"></rect>
+            <rect x="50" y="130" width="500" height="60" fill="#2f3136" rx="5"></rect>
+            <rect x="50" y="210" width="500" height="60" fill="#2f3136" rx="5"></rect>
+            <text x="300" y="350" text-anchor="middle" fill="#dcddde" font-family="Arial" font-size="24">Last message sent 847 days ago...</text>
+          </svg>
+          <figcaption>Empty chat channels echo with digital silence</figcaption>
+        </figure>
+        <p>Dead Discord servers represent a unique form of digital abandonment. Once vibrant communities now stand frozen in time, their last messages hanging in perpetual digital suspension.</p>
+        <p>These servers often remain in a state of perfect preservation, with conversations, shared memories, and community inside jokes existing in a strange limbo between activity and deletion.</p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>404: The Ultimate Digital Liminal Space</h2>
+        <figure class="news-image">
+          <svg width="600" height="400" viewBox="0 0 600 400">
+            <defs>
+              <linearGradient id="grid-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1"></stop>
+                <stop offset="100%" style="stop-color:#4a4a4a;stop-opacity:1"></stop>
+              </linearGradient>
+            </defs>
+            <rect width="600" height="400" fill="url(#grid-gradient)"></rect>
+            <text x="300" y="180" text-anchor="middle" fill="#fff" font-family="Arial" font-size="72" font-weight="bold">404</text>
+            <text x="300" y="240" text-anchor="middle" fill="#fff" font-family="Arial" font-size="24">Page Not Found</text>
+          </svg>
+          <figcaption>The familiar void of missing web pages</figcaption>
+        </figure>
+        <p>The 404 error page stands as perhaps the most encountered liminal space in digital history. These dead ends and broken links represent the constant flux and impermanence of the digital landscape.</p>
+        <p>Digital archaeologists estimate that up to 30% of the links from the early 2000s now lead to 404 pages, creating vast networks of digital dead ends that point to content that once was but is no longer accessible.</p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>Dead Internet Theory: Are We Alone Online?</h2>
+        <figure class="news-image">
+          <svg width="600" height="400" viewBox="0 0 600 400">
+            <rect width="600" height="400" fill="#000"></rect>
+            <circle cx="300" cy="200" r="100" fill="none" stroke="#0f0" stroke-width="2">
+              <animate attributeName="r" values="100;110;100" dur="4s" repeatCount="indefinite"></animate>
+            </circle>
+            <text x="300" y="205" text-anchor="middle" fill="#0f0" font-family="monospace" font-size="16">NO REAL USERS DETECTED</text>
+          </svg>
+          <figcaption>The eerie possibility of an automated internet</figcaption>
+        </figure>
+        <p>The Dead Internet Theory posits a disturbing possibility: that the vast majority of the internet is now generated by artificial intelligence and bots, with human users becoming an increasingly rare minority in the digital landscape.</p>
+        <p>Proponents of the theory point to the increasing sophistication of AI-generated content, the prevalence of bot accounts, and the seemingly endless stream of algorithmically-created websites as evidence that authentic human interaction online is becoming increasingly scarce.</p>
+        <p>"When you really look at it, how much of what you see online is genuinely created by humans?" asks digital theorist Marcus Chen. "The line between authentic and artificial content becomes more blurred every day."</p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>Archive.org: The Digital Library of Alexandria</h2>
+        <figure class="news-image">
+          <svg width="600" height="400" viewBox="0 0 600 400">
+            <rect width="600" height="400" fill="#f8f8f8"></rect>
+            <g transform="translate(150,100)">
+              <rect width="300" height="200" fill="#2c2c2c"></rect>
+              <text x="150" y="100" text-anchor="middle" fill="#fff" font-family="Arial" font-size="24">Internet Archive</text>
+              <path d="M100,140 L200,140 L150,80 Z" fill="#fff"></path>
+            </g>
+          </svg>
+          <figcaption>The Internet Archive: Preserving our digital heritage</figcaption>
+        </figure>
+        <p>As websites vanish and digital spaces fade away, the Internet Archive stands as humanity's bulwark against digital entropy. Since 1996, this non-profit organization has worked tirelessly to preserve our collective digital heritage.</p>
+        <p>Through its famous Wayback Machine, Archive.org has saved over 700 billion web pages, creating a vast historical record of the internet's evolution. "Every day, websites disappear forever," explains Dr. Sarah Martinez, digital preservation expert. "Without Archive.org, we would lose countless pieces of our digital history."</p>
+        <p>Visit <a href="https://archive.org">Archive.org</a> to explore this remarkable repository of digital history, where you can journey through time to visit websites as they appeared decades ago.</p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>Famous Liminal Websites: Digital Spaces Frozen in Time</h2>
+        <figure class="news-image">
+          <svg width="600" height="400" viewBox="0 0 600 400">
+            <rect width="600" height="400" fill="#c0c0c0"></rect>
+            <rect x="50" y="50" width="500" height="300" fill="#fff"></rect>
+            <text x="300" y="200" text-anchor="middle" fill="#000080" font-family="Times New Roman" font-size="24" text-decoration="underline">Welcome to my homepage!</text>
+            <image x="500" y="50" width="32" height="32" href="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></image>
+          </svg>
+          <figcaption>The nostalgic aesthetic of Web 1.0</figcaption>
+        </figure>
+        <p>Certain websites have become legendary in digital archaeology circles for their perfect preservation of specific moments in internet history. Space Jam's official 1996 website remains unchanged, a pristine time capsule of mid-90s web design that Warner Bros. has intentionally preserved.</p>
+        <p>The Heaven's Gate cult website continues to be maintained decades after the group's tragic end, its primitive HTML frozen in a perpetual 1997. These digital artifacts serve as perfect examples of liminal spaces - unchanged despite the internet's evolution around them.</p>
+        <p>Yale's Art and Architecture site, unchanged since 1997, stands as another famous example of digital preservation through neglect. These sites exist in a strange liminal space between active maintenance and abandonment, neither fully alive nor completely dead.</p>
+      </section>
+
+      <section class="news-item clearfix">
+        <h2>Lost &amp; Preserved: Web's Most Famous Time Capsules</h2>
+        <figure class="news-image">
+          <svg width="600" height="400" viewBox="0 0 600 400">
+            <rect width="600" height="400" fill="#c0c0c0"></rect>
+            <rect x="20" y="20" width="560" height="360" fill="#ffffff" stroke="#000000"></rect>
+            <text x="300" y="100" text-anchor="middle" font-family="Arial" font-size="24" fill="#0000ff" text-decoration="underline">Under Construction!</text>
+            <g transform="translate(250,150)">
+              <rect width="100" height="100" fill="#ff0000"></rect>
+              <text x="50" y="60" text-anchor="middle" font-family="Arial" font-size="14" fill="#ffffff">WORK IN PROGRESS</text>
+            </g>
+            <image x="450" y="150" width="64" height="64" href="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></image>
+          </svg>
+          <figcaption>Classic "Under Construction" graphics were once ubiquitous across the early web</figcaption>
+        </figure>
+        <p>While many iconic websites have been lost to time, some remarkable survivors and preserved examples still exist:</p>
+        
+        <ul style="padding-left: 20px;">
+          <li><strong>Still Active:</strong>
+            <ul>
+              <li><a href="https://www.spacejam.com/1996/">Space Jam (1996)</a> - Warner Bros. maintains this perfectly preserved movie promotional site</li>
+              <li><a href="https://www.heavensgate.com/">Heaven's Gate</a> - Maintained by a former member, unchanged since 1997</li>
+              <li><a href="https://www.dolekemp96.org/">Bob Dole's 1996 Presidential Campaign</a> - Preserved as a historical artifact</li>
+              <li><a href="https://www.warnerbros.com/archive/wwf/">WWF In The House</a> - Classic Warner Bros. wrestling promotion site</li>
+            </ul>
+          </li>
+          <li><strong>Lost But Preserved on Archive.org:</strong>
+            <ul>
+              <li><a href="https://web.archive.org/web/19961219003318/http://www.mtv.com/">MTV's 1996 Website</a> - Early music industry web presence</li>
+              <li><a href="https://web.archive.org/web/19961022175643/http://www.nintendo.com/">Nintendo (1996)</a> - Original gaming giant's web debut</li>
+              <li><a href="https://web.archive.org/web/19961219003318/http://www.amazon.com/">Amazon's 1996 Homepage</a> - When they only sold books</li>
+            </ul>
+          </li>
+          <li><strong>Notable Lost Websites:</strong>
+            <ul>
+              <li>GeoCities (1994-2009) - Once hosted millions of personal homepages</li>
+              <li>TheGlobe.com (1995-2008) - Early social networking pioneer</li>
+              <li>Pets.com (1998-2000) - Iconic dot-com bubble casualty</li>
+              <li>Google Video (2005-2012) - Pre-YouTube video hosting service</li>
+            </ul>
+          </li>
+        </ul>
+        
+        <p>These digital artifacts serve as important reminders of the web's evolution. While some have been carefully preserved, others exist only in screenshots and memories, highlighting the importance of digital preservation efforts.</p>
+      </section>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-item">
+        <h3>Liminal Weather Report</h3>
+        <ul style="list-style-type: none; padding-left: 0;">
+          <li><strong>The Digital Void:</strong> Binary precipitation, 404°F</li>
+          <li><strong>Abandoned Forums:</strong> Dense nostalgia, visibility low</li>
+          <li><strong>Virtual Plaza:</strong> Vaporwave conditions, ∞°F</li>
+        </ul>
+      </div>
+      <div class="sidebar-item">
+        <h3>Liminal Space of the Day</h3>
+        <p>Today's featured liminal space: The forgotten MySpace profile of a long-lost friend.</p>
+      </div>
+      <div class="sidebar-item">
+        <h3>Liminal Facts</h3>
+        <ul style="padding-left: 20px;">
+          <li>The concept of digital liminality highlights the transient nature of online spaces.</li>
+          <li>Many digital liminal spaces evoke a sense of nostalgia for early internet experiences.</li>
+          <li>Digital archaeology is a growing field focused on preserving obsolete online content.</li>
+          <li>Some believe that exploring digital ruins can provide insight into our cultural evolution.</li>
+        </ul>
+      </div>
+      <div class="sidebar-item">
+        <h3>Digital Liminal Space Quiz</h3>
+        <form id="liminal-quiz">
+          <div style="margin-bottom: 15px;">
+            <p><strong>1. Which of these is considered a digital liminal space?</strong></p>
+            <label><input type="radio" name="q1" value="a"> a) Active Facebook group</label><br>
+            <label><input type="radio" name="q1" value="b"> b) Abandoned forum thread</label><br>
+            <label><input type="radio" name="q1" value="c"> c) Popular YouTube channel</label><br>
+            <label><input type="radio" name="q1" value="d"> d) Current news website</label><br>
+          </div>
+          <div style="margin-bottom: 15px;">
+            <p><strong>2. What year saw the first documented case of "digital nostalgia"?</strong></p>
+            <label><input type="radio" name="q2" value="a"> a) 1995</label><br>
+            <label><input type="radio" name="q2" value="b"> b) 2000</label><br>
+            <label><input type="radio" name="q2" value="c"> c) 2005</label><br>
+            <label><input type="radio" name="q2" value="d"> d) 2010</label><br>
+          </div>
+          <button type="submit" style="background-color: #1c1f33; color: white; border: none; padding: 10px 20px; cursor: pointer;">Submit Answers</button>
+        </form>
+        <div id="quiz-result" style="margin-top: 15px; font-weight: bold;"></div>
+      </div>
+      <div class="sidebar-item">
+        <h3>My Book: Abandoned Miami</h3>
+        <p>Check out my book published by Fonthill Media UK "<em>Abandoned Miami: No Trespassing</em>" available on Amazon.</p>
+        <figure class="news-image">
+          <img src="/abandoned miami book 1.jpg" alt="The cover of Tanya Velazco's book, 'Abandoned Miami,' features a photograph of an abandoned building's doorway, overgrown with weeds and showing signs of decay. The image evokes a sense of mystery and intrigue, suggesting the themes of the book within.">
+        </figure>
+      </div>
+      <div class="sidebar-item">
+        <h3>Quote of the Day</h3>
+        <p>"In the liminal space between pixels and memory, we find the essence of our digital selves." - Unknown</p>
+      </div>
+      <div class="sidebar-item">
+        <h3>Advertisement</h3>
+        <figure id="matrix-ad" style="margin: 0; padding: 0; width: 300px; height: 300px; position: relative; overflow: hidden; background: #000; cursor: pointer;">
+          <svg width="300" height="400" style="position: absolute; top: 0; left: 0;">
+            <defs>
+              <linearGradient id="matrix-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#0f0;stop-opacity:0.1"></stop>
+                <stop offset="100%" style="stop-color:#0f0;stop-opacity:0.5"></stop>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="black"></rect>
+            <text x="50%" y="30%" text-anchor="middle" fill="#0f0" font-family="monospace" font-size="24px" font-weight="bold">ENTER THE MATRIX</text>
+            <text x="50%" y="45%" text-anchor="middle" fill="#0f0" font-family="monospace" font-size="14px">The Digital Realm Awaits</text>
+            <g class="matrix-code" fill="#0f0" font-family="monospace" font-size="11px">
+              <text x="10%" y="60%">10011001</text>
+              <text x="80%" y="70%">01101100</text>
+              <text x="30%" y="80%">11001010</text>
+              <text x="60%" y="90%">00110101</text>
+            </g>
+            <rect x="50" y="200" width="200" height="40" rx="5" fill="#0f0" opacity="0.8"></rect>
+            <text x="50%" y="225" text-anchor="middle" fill="black" font-family="monospace" font-size="16px" font-weight="bold">JACK IN NOW</text>
+            <text x="50%" y="270" text-anchor="middle" fill="#0f0" font-family="monospace" font-size="14px">Only 49.99 Credits</text>
+            <text x="50%" y="290" text-anchor="middle" fill="#0f0" font-family="monospace" font-size="12px">Reality Optional</text>
+          </svg>
+        </figure>
+      </div>
+      <div class="sidebar-item joke-container">
+        <h3>Digital Liminal Joke of the Day</h3>
+        <p class="joke-setup">Why did the website feel lonely?</p>
+        <button class="reveal-punchline">Click for punchline</button>
+        <p class="joke-punchline" style="display: none;">Because all its visitors were just passing through!</p>
+      </div>
+      <div class="sidebar-item">
+        <h3>Did You Know?</h3>
+        <p>The concept of digital liminal spaces extends beyond physical locations. In art and media, these spaces often serve as metaphors for transitions between states of being, reflecting the profound impact of technology on human experience.</p>
+      </div>
+      <div class="sidebar-item">
+        <h3>Letters To The Editor</h3>
+        <p>Dear Editor,<br>
+        I’ve recently been exploring old internet sites and stumbled upon a long-lost GeoCities page that brought back a flood of memories. These digital relics feel like time capsules of our early online experiences. I urge you to consider writing about the importance of preserving these digital spaces.<br>
+        Sincerely,<br>
+        A Nostalgic Web Surfer</p>
+      </div>
+      <div class="sidebar-item">
+        <h3>Upcoming Issues</h3>
+        <ul style="padding-left: 20px;">
+          <li><strong>Issue #4 (Dec 14, 2024):</strong> The Lost Media Edition</li>
+          <li><strong>Issue #5 (Dec 21, 2024):</strong> Holiday Liminal Spaces Special</li>
+          <li><strong>Issue #6 (Dec 28, 2024):</strong> Year-End Retrospective: Most Notable Liminal Discoveries of 2024</li>
+        </ul>
+      </div>
+      <div class="sidebar-item">
+        <h3>Preventing Link Rot: Best Practices</h3>
+        <ul style="padding-left: 20px;">
+          <li>Always use the Internet Archive's <a href="https://web.archive.org">Wayback Machine</a> to preserve important web content</li>
+          <li>Maintain local archives of critical digital spaces</li>
+          <li>Use persistent identifiers (DOIs) when available</li>
+          <li>Regularly check and update your bookmarks</li>
+          <li>Document and screenshot important digital spaces</li>
+        </ul>
+        <p style="font-style: italic; font-size: 0.9rem; margin-top: 10px;">
+          Remember: Today's active website could be tomorrow's digital ruin. Help preserve our virtual heritage.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer style="text-align: center; padding: 1rem; border-top: 1px solid #1c1f33;">
+  <p>Liminal Times Created by Tanya V. aka Abandoned Muse.</p>
+  <p>
+    Follow me on:
+    <a href="https://x.com/_abandonedmuse" target="_blank">X.com @_abandonedmuse</a>,
+    <a href="https://youtube.com/@abandonedmuse" target="_blank">YouTube @abandonedmuse</a>,
+    <a href="https://instagram.com/abandonedmuseofficial" target="_blank">Instagram @abandonedmuseofficial</a>,
+    <a href="https://tiktok.com/@abandonedmuse" target="_blank">TikTok @abandonedmuse</a>,
+    <a href="https://websim.ai/@abandonedmuse" target="_blank">WebSim @abandonedmuse</a>,
+    <a href="https://soundcloud.com/abandonedmuse" target="_blank">SoundCloud @abandonedmuse</a>,
+    <a href="https://abandonedmuse.bandcamp.com" target="_blank">Bandcamp @abandonedmuse</a>
+  </p>
+</footer>
+
+<div id="matrix-overlay"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+<script>
+let rainActive = false; // Prevent multiple overlays at once
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Dark Mode Toggle Logic
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const body = document.body;
+
+  const setDarkMode = (isDark) => {
+    if (isDark) {
+      body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+      darkModeToggle.title = "Toggle Light Mode";
+      localStorage.setItem('darkModeUserPref', 'enabled');
+    } else {
+      body.classList.remove('dark-mode');
+      darkModeToggle.textContent = '🌙';
+      darkModeToggle.title = "Toggle Dark Mode";
+      localStorage.setItem('darkModeUserPref', 'disabled');
+    }
+  };
+
+  // Check local storage on page load
+  const userPref = localStorage.getItem('darkModeUserPref');
+  if (userPref === 'enabled') {
+    setDarkMode(true);
+  } else if (userPref === 'disabled') {
+    setDarkMode(false);
+  } else {
+    // Optional: Check system preference if no user preference is stored
+    // This requires a bit more logic with matchMedia, for now, default to light
+    // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    //  setDarkMode(true);
+    // } else {
+       setDarkMode(false); // Default to light if no preference
+    // }
+  }
+
+  darkModeToggle.addEventListener('click', () => {
+    const isDarkModeEnabled = body.classList.contains('dark-mode');
+    setDarkMode(!isDarkModeEnabled);
+  });
+
+  // Existing Joke Logic
+  const jokeContainer = document.querySelector('.joke-container');
+  if (jokeContainer) { // Add null check
+    const revealButton = jokeContainer.querySelector('.reveal-punchline');
+    const punchline = jokeContainer.querySelector('.joke-punchline');
+    if (revealButton && punchline) { // Add null checks
+        revealButton.addEventListener('click', function() {
+        punchline.style.display = 'block';
+        gsap.from(punchline, {duration: 0.5, opacity: 0, y: 20, ease: "power2.out"});
+        revealButton.style.display = 'none';
+        });
+    }
+  }
+
+  // Existing Quiz Logic
+  const quizForm = document.getElementById('liminal-quiz');
+  const resultDiv = document.getElementById('quiz-result');
+  if (quizForm && resultDiv) { // Add null checks
+    quizForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const answers = {q1: 'b', q2: 'a'};
+        const formData = new FormData(quizForm);
+        let score = 0;
+        for (let [question, answer] of formData.entries()) {
+        if (answers[question] === answer) score++;
+        }
+        resultDiv.innerHTML = `You got ${score} out of 2 questions correct!`;
+        gsap.from(resultDiv, {duration: 0.5, opacity: 0, y: 20, ease: "power2.out"});
+    });
+  }
+  
+  // Existing Matrix Rain Logic
+  function createMatrixRain() {
+    if (rainActive) return; 
+    rainActive = true; 
+
+    const overlay = document.getElementById('matrix-overlay');
+    overlay.innerHTML = ''; // Clear previous content
+    overlay.style.cssText = `
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7); z-index: 9999; display: block;
+      overflow: hidden; pointer-events: none;`;
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    overlay.appendChild(canvas);
+
+    const katakana = 'アカサタナハマヤラワンイキシチニヒミリウクスツヌフムユルエケセテネヘメレオコソトノホモヨロ0123456789';
+    const characters = katakana.split('');
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    
+    for (let x = 0; x < columns; x++) drops[x] = Math.random() * canvas.height;
+
+    let animationFrameId;
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0F0'; // Matrix green
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = characters[Math.floor(Math.random() * characters.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+        ctx.fillText(text, x, y);
+        if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+      animationFrameId = requestAnimationFrame(draw);
+    }
+    draw();
+
+    const matrixQuotes = [
+      "There is no spoon.", "Welcome to the real world.", "I know kung fu.",
+      "Free your mind.", "What is real?", 
+      "Unfortunately, no one can be told what the Matrix is.",
+      "Don't think you are, know you are.", 
+      "You take the red pill, you stay in Wonderland.",
+      "I'm trying to free your mind, Neo.", "The Matrix has you."
+    ];
+    const randomQuote = matrixQuotes[Math.floor(Math.random() * matrixQuotes.length)];
+    const quoteBox = document.createElement('div');
+    quoteBox.style.cssText = `
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-family: 'Courier New', monospace; font-size: 24px; color: #0f0; /* Matrix green */
+      text-shadow: 0 0 5px #0f0, 0 0 20px #0f0; text-align: center; z-index: 10000;
+      animation: neonShimmer 1.5s infinite; white-space: nowrap;`;
+    quoteBox.textContent = randomQuote;
+    overlay.appendChild(quoteBox);
+
+    setTimeout(() => {
+      cancelAnimationFrame(animationFrameId);
+      overlay.style.display = 'none';
+      overlay.innerHTML = ''; // Clear canvas and quoteBox
+      rainActive = false; 
+    }, 5000); // Display for 5 seconds
+  }
+
+  const matrixAd = document.getElementById('matrix-ad');
+  if (matrixAd) { // Add null check
+    matrixAd.addEventListener('click', createMatrixRain);
+
+    matrixAd.addEventListener('mouseover', function() {
+        this.style.cursor = 'pointer';
+        const texts = this.querySelectorAll('text');
+        texts.forEach(text => {
+        // Make hover effect more subtle or specific if needed
+        if(text.getAttribute('fill') === '#0f0') text.style.filter = 'brightness(1.5)';
+        });
+    });
+
+    matrixAd.addEventListener('mouseout', function() {
+        const texts = this.querySelectorAll('text');
+        texts.forEach(text => {
+        text.style.filter = 'brightness(1)';
+        });
+    });
+  }
+});
+</script>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
