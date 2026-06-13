@@ -8,7 +8,7 @@ A static GitHub Pages version of **The Liminal Times**.
 
 <p>
   <a href="https://hax0rgurl.github.io/liminaltimes3/">
-    <img alt="The Liminal Times Issue #3 live page preview" src="https://api.microlink.io/?url=https%3A%2F%2Fhax0rgurl.github.io%2Fwebsim-liminaltimes3%2F&screenshot=true&meta=false&embed=screenshot.url" width="900">
+    <img alt="The Liminal Times Issue #3 live page preview" src="Screenshot.png" width="900">
   </a>
 </p>
 
